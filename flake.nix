@@ -1,29 +1,16 @@
 {
-  description = "A very basic flake";
+  description = "A collection of flake templates";
 
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nix-shell.url = "github:loophp/nix-shell";
+  outputs = { self }: {
+
+    templates = {
+      simple = {
+        path = ./simple;
+        description = "A very basic flake";
+      };
+
+    };
+
+    defaultTemplate = self.templates.simple;
   };
-
-  outputs = { self, nixpkgs, flake-utils, nix-shell }:
-    flake-utils.lib.eachDefaultSystem
-      (system:
-        let
-          pkgs = import nixpkgs {
-            inherit system;
-          };
-        in
-        {
-          devShells = {
-            default = pkgs.mkShell {
-              name = "Your Project";
-
-              buildInputs = [
-                # pkgs.sops
-              ];
-            };
-          };
-        }
-      );
 }
